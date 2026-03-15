@@ -11,15 +11,14 @@ def find_promo_codes(game_name, platform):
     if not API_KEY:
         return "⚠️ **系統錯誤**：未設定 API 金鑰"
         
-    # 【關鍵修正】配合最新版 SDK，改用 'google_search'
+    # 【關鍵修正】移除 tools 參數，避開套件版本的嚴格限制
     model = genai.GenerativeModel(
-        model_name='gemini-2.5-flash',
-        tools='google_search' 
+        model_name='gemini-2.5-flash'
     )
     
     # Prompt 回歸單純，要求 Markdown 條列式輸出
     prompt = f"""
-    請幫我使用 Google 搜尋，尋找 {platform} 平台上的遊戲「{game_name}」目前最新、最可能有效的 Promo Codes (兌換碼/序號)。
+    請幫我尋找 {platform} 平台上的遊戲「{game_name}」目前最新、最可能有效的 Promo Codes (兌換碼/序號)。
     請用 Markdown 格式清楚列出（例如使用條列式），並附上對應的獎勵說明。
     如果找不到任何序號，請直接告訴我目前找不到。
     """
