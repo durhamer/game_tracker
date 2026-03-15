@@ -1,23 +1,25 @@
 import google.generativeai as genai
 import streamlit as st
 
+# 從 Streamlit Secrets 讀取金鑰
 API_KEY = st.secrets.get("GEMINI_API_KEY")
 
 if API_KEY:
     genai.configure(api_key=API_KEY)
 
-def get_gemini_model():
-    return genai.GenerativeModel('gemini-2.5-flash')
-
 def find_promo_codes(game_name, platform):
     if not API_KEY:
         return "⚠️ **系統錯誤**：未設定 API 金鑰"
         
-    model = get_gemini_model()
+    # 【關鍵】加入 google_search_retrieval 工具，讓 API 擁有跟 App 一樣的聯網搜尋能力
+    model = genai.GenerativeModel(
+        model_name='gemini-2.5-flash',
+        tools='google_search_retrieval' 
+    )
     
-    # Prompt 回歸單純，請它直接給出像 App 一樣的條列式結果
+    # Prompt 回歸單純，要求 Markdown 條列式輸出
     prompt = f"""
-    請幫我尋找 {platform} 平台上的遊戲「{game_name}」目前最新、最可能有效的 Promo Codes (兌換碼/序號)。
+    請幫我使用 Google 搜尋，尋找 {platform} 平台上的遊戲「{game_name}」目前最新、最可能有效的 Promo Codes (兌換碼/序號)。
     請用 Markdown 格式清楚列出（例如使用條列式），並附上對應的獎勵說明。
     如果找不到任何序號，請直接告訴我目前找不到。
     """
