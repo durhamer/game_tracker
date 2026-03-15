@@ -20,7 +20,7 @@ def find_promo_codes(game_name, platform):
     try:
         # 新版 SDK 呼叫 API 的寫法
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3-flash-preview',
             contents=prompt,
             config=types.GenerateContentConfig(
                 # 【關鍵】這就是新版 SDK 成功啟動聯網搜尋的正確參數！
