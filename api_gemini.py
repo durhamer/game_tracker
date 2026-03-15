@@ -11,10 +11,10 @@ def find_promo_codes(game_name, platform):
     if not API_KEY:
         return "⚠️ **系統錯誤**：未設定 API 金鑰"
         
-    # 【關鍵】加入 google_search_retrieval 工具，讓 API 擁有跟 App 一樣的聯網搜尋能力
+    # 【關鍵修正】配合最新版 SDK，改用 'google_search'
     model = genai.GenerativeModel(
         model_name='gemini-2.5-flash',
-        tools='google_search_retrieval' 
+        tools='google_search' 
     )
     
     # Prompt 回歸單純，要求 Markdown 條列式輸出
