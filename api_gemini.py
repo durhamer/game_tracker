@@ -9,7 +9,11 @@ if API_KEY:
     genai.configure(api_key=API_KEY)
 
 def get_gemini_model():
-    return genai.GenerativeModel('gemini-2.5-flash')
+    # 加入 Google 搜尋工具，讓 AI 可以即時上網找最新序號
+    return genai.GenerativeModel(
+        model_name='gemini-2.5-flash',
+        tools='google_search_retrieval' # 加上這行開啟搜尋能力
+    )
 
 def find_promo_codes(game_name, platform):
     if not API_KEY:
