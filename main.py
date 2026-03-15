@@ -36,17 +36,11 @@ if keyword:
             with code_col:
                 st.header("🎁 最新 Promo Codes")
                 with st.spinner("正在召喚 AI 尋找序號中..."):
-                    codes_data = find_promo_codes(selected_game_name, platform)
+                    # 直接呼叫 API 取得文字結果
+                    codes_text = find_promo_codes(selected_game_name, platform)
                     
-                    # 先檢查是不是空陣列
-                    if len(codes_data) == 0:
-                        st.info("AI 目前找不到相關的序號，或者該遊戲近期沒有發放。")
-                    # 再檢查有沒有抓到東西，且不是我們自訂的系統錯誤
-                    elif codes_data[0].get("code") != "系統錯誤" and codes_data[0].get("code") != "API 錯誤":
-                        st.dataframe(codes_data, use_container_width=True, hide_index=True)
-                    # 最後處理 API 錯誤的情況
-                    else:
-                        st.error(f"發生錯誤：{codes_data[0].get('reward', '未知錯誤')}")
+                    # 用 st.markdown 完美渲染 AI 回傳的條列式文字
+                    st.markdown(codes_text)
 
             # 【左側】遊戲即時更新與公告
             with info_col:
